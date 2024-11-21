@@ -1,0 +1,319 @@
+1.Unipolar NRZ:
+
+clc
+clear all
+bitrate=1; %Rb-bitrate
+bits=[1 0 0 1 0 1 1 1 0 1 0];
+T= length(bits)/bitrate; %Symbol duration
+n=200; %bit duration
+dt=1/n;
+TB=1/bitrate; %1/bitrate value
+a=1;
+f=0:bitrate/100:2*bitrate;
+x1=f*TB; % power spectra frequency
+t=0:dt:T; %t takes the valu 0 to T with innerspace equal to dt
+x=zeros(1,length(t)); %initialisation of x
+
+%line coding :Uni-polar
+for(i=0:length(bits)-1)
+        if bits(i+1)==1
+              x((i*n)+1:(i+1)*n)=1;
+else
+        x((i*n)+1:(i+1)*n)=0;
+        end
+end
+
+subplot(2,1,1)
+plot(x);
+xlabel('Descrete time');
+ylabel('Amplitude');
+title('NRZ UNI POLAR-LINE CODING')
+axis([0 2500 0 2])
+sx=((a^2)/4)*TB*(sinc(x1).^2)+((a^2)/4)*dirac(f); %power spectra UNIPOLAR formula
+subplot(2,1,2)
+plot(sx);
+xlabel('Frequency');
+ylabel('Power');
+title('NRZ UNI POLAR-POWER SPECTRUM-LINE CODING');
+
+2.Unipolar RZ:
+
+clc
+clear all
+bitrate=1; %Rb-bitrate
+bits=[1 0 0 1 0 1 1 1 0 1 0];
+T= length(bits)/bitrate; %Symbol duration
+n=200; %bit duration
+dt=1/n;
+TB=1/bitrate; %1/bitrate value
+a=1;
+f=0:bitrate/100:2*bitrate;
+x1=f*TB; % power spectra frequency
+t=0:dt:T; %t takes the valu 0 to T with innerspace equal to dt
+x=zeros(1,length(t)); %initialisation of x
+%line coding :Uni-polar
+for(i=0:length(bits)-1)
+      if bits(i+1)==1
+            x((i*n)+1:(i+0.5)*n)=1;
+            x(((i+0.5)*n)+1:(i+1)*n)=0;
+else
+     x((i*n)+1:(i+0.5)*n)=0;
+     x(((i+0.5)*n)+1:(i+1)*n)=0;
+     end
+end
+
+subplot(2,1,1)
+plot(x);
+xlabel('Descrete time');
+ylabel('Amplitude');
+title('RZ UNI POLAR-LINE CODING')
+axis([0 2500 0 2])
+sx=((a^2)/4)*TB*(sinc(x1).^2)+((a^2)/4)*dirac(f); %power spectra UNIPOLAR formila
+subplot(2,1,2)
+plot(sx);
+xlabel('Frequency');
+ylabel('Power');
+title('RZ UNI POLAR-POWER SPECTRUM-LINE CODING');
+
+3. Polar NRZ:
+clc
+clear all
+
+bitrate=1; %Rb-bitrate
+bits=[1 0 0 1 0 1 1 1 0 1 0];
+T= length(bits)/bitrate; %Symbol duration
+n=200; %bit duration
+dt=1/n;
+TB=1/bitrate; %1/bitrate value
+a=1;
+f=0:bitrate/100:2*bitrate;
+x1=f*TB; % power spectra frequency
+t=0:dt:T; %t takes the valu 0 to T with innerspace equal to dt
+x=zeros(1,length(t)); %initialisation of x
+
+%line coding -polar
+for(i=0:length(bits)-1)
+if bits(i+1)==1
+x((i*n)+1:(i+1)*n)=1;
+else
+x((i*n)+1:(i+1)*n)=-1;
+end
+end
+
+subplot(2,1,1)
+plot(x);
+xlabel('Descrete time');
+ylabel('Amplitude');
+title('NRZ POLAR-LINE CODING')
+axis([0 2500 -1 1])
+sx=(a^2)*TB*(sinc(x1).^2); %power spectra POLAR formila
+subplot(2,1,2)
+plot(sx);
+xlabel('Frequency');
+ylabel('Power');
+title('NRZ POLAR-POWER SPECTRUM-LINE CODING');
+
+4. Polar RZ:
+clc
+clear all
+
+bitrate=1; %Rb-bitrate
+bits=[1 0 0 1 0 1 1 1 0 1 0];
+T= length(bits)/bitrate; %Symbol duration
+n=200; %bit duration
+dt=1/n;
+TB=1/bitrate; %1/bitrate value
+a=1;
+f=0:bitrate/100:2*bitrate;
+x1=f*TB; % power spectra frequency
+t=0:dt:T; %t takes the valu 0 to T with innerspace equal to dt
+x=zeros(1,length(t)); %initialisation of x
+%line coding -polar
+for(i=0:length(bits)-1)
+if bits(i+1)==1
+x((i*n)+1:(i+0.5)*n)=1;
+x(((i+0.5)*n)+1:(i+1)*n)=0;
+else
+x((i*n)+1:(i+0.5)*n)=-1;
+x(((i+0.5)*n)+1:(i+1)*n)=0;
+end
+end
+subplot(2,1,1)
+plot(x);
+xlabel('Descrete time');
+ylabel('Amplitude');
+title('RZ POLAR-LINE CODING')
+axis([0 2500 -1 1])
+sx=(a^2)*TB*(sinc(x1).^2); %power spectra POLAR formila
+subplot(2,1,2)
+plot(sx);
+xlabel('Frequency');
+ylabel('Power');
+title('RZ POLAR-POWER SPECTRUM-LINE CODING');
+
+5. Bi-Polar AMI:
+clc
+clear all
+bitrate=1; %Rb-bitrate
+bits=[1 0 0 1 0 1 1 1 0 1 0];
+T= length(bits)/bitrate; %Symbol duration – Full time of bit sequence
+n=200; %bit duration
+dt=1/n;
+TB=1/bitrate; %1/bitrate value
+a=1;
+f=0:bitrate/100:2*bitrate;
+x1=f*TB; % power spectra frequency
+t=0:dt:T; %t takes the valu 0 to T with innerspace equal to dt
+x=zeros(1,length(t)); %initialisation of x
+count=0;
+%line coding :BI-polar
+for(i=0:length(bits)-1)
+if bits(i+1)==1
+if mod(count,2)==0
+x((i*n)+1:(i+1)*n)=1;
+else
+x((i*n)+1:(i+1)*n)=-1;
+end
+count=count+1;
+else
+x((i*n)+1:(i+1)*n)=0;
+end
+
+end
+subplot(2,1,1)
+plot(x);
+xlabel('Descrete time');
+ylabel('Amplitude');
+title('BI-POLAR-LINE CODING - AMI')
+axis([0 2500 -2 2])
+sx=(a^2)*TB*(sinc(x1)).*(sinc(x1)).*(sin(pi*x1)).*(sin(pi*x1)); %power spectra BIPOLAR formila
+subplot(2,1,2)
+plot(sx);
+xlabel('Frequency');
+ylabel('Power');
+title(' BI-POLAR-POWER SPECTRUM-LINE CODING-AMI');
+
+6. Bi-Polar Pseusoterenary:
+clc
+clear all
+bitrate=1; %Rb-bitrate
+bits=[1 0 0 1 0 1 1 1 0 1 0];
+T= length(bits)/bitrate; %Symbol duration – Full time of bit sequence
+n=200; %bit duration
+dt=1/n;
+TB=1/bitrate; %1/bitrate value
+a=1;
+f=0:bitrate/100:2*bitrate;
+x1=f*TB; % power spectra frequency
+t=0:dt:T; %t takes the valu 0 to T with innerspace equal to dt
+x=zeros(1,length(t)); %initialisation of x
+count=0;
+%line coding :BI-polar
+for(i=0:length(bits)-1)
+if bits(i+1)==0
+if mod(count,2)==0
+x((i*n)+1:(i+1)*n)=1;
+else
+x((i*n)+1:(i+1)*n)=-1;
+end
+count=count+1;
+else
+x((i*n)+1:(i+1)*n)=0;
+end
+
+end
+subplot(2,1,1)
+plot(x);
+xlabel('Descrete time');
+ylabel('Amplitude');
+title('BI-POLAR-LINE CODING-PSUEDOTERNARY')
+axis([0 2500 -2 2])
+sx=(a^2)*TB*(sinc(x1)).*(sinc(x1)).*(sin(pi*x1)).*(sin(pi*x1)); %power spectra BIPOLAR formila
+subplot(2,1,2)
+plot(sx);
+xlabel('Frequency');
+ylabel('Power');
+title(' BI-POLAR-POWER SPECTRUM-LINE CODING-PSUEDOTERNARY');
+
+7. Manchester:
+clc
+clear all
+
+bitrate=1; %Rb-bitrate
+bits=[1 0 0 1 0 1 1 1 0 1 0];
+T= length(bits)/bitrate; %Symbol duration
+n=200; %bit duration
+dt=1/n;
+TB=1/bitrate; %1/bitrate value
+a=1;
+f=0:bitrate/100:2*bitrate;
+x1=f*TB; % power spectra frequency
+t=0:dt:T; %t takes the valu 0 to T with innerspace equal to dt
+x=zeros(1,length(t)); %initialisation of x
+%line coding :MANCHESTER
+for(i=0:length(bits)-1)
+if bits(i+1)==1
+x((i*n)+1:(i+0.5)*n)=1;
+x(((i+0.5)*n)+1:(i+1)*n)=-1;
+else
+x((i*n)+1:(i+0.5)*n)=-1;
+x(((i+0.5)*n)+1:(i+1)*n)=1;
+end
+end
+subplot(2,1,1)
+plot(x);
+xlabel('Descrete time');
+ylabel('Amplitude');
+title('MANCHESTER-LINE CODING')
+axis([0 2500 -2 2])
+sx=(a^2)*TB*(sinc(x1/2)).*(sinc(x1/2)).*(sin(pi*x1/2)).*(sin(pi*x1/2));
+%power spectra MANCHESTER formila
+subplot(2,1,2)
+plot(sx);
+xlabel('Frequency');
+ylabel('Power');
+title('MANCHESTER-POWER SPECTRUM-LINE CODING');
+
+
+
+8.Differential Manchester:
+clc
+clear all
+bitrate = 1; % Rb-bitrate
+bits = [1 0 0 1 0 1 1 1 0 1 0]; % Input bits
+T = length(bits) / bitrate; % Total duration
+n = 200; % Bit duration
+dt = 1/n; % Time increment
+TB = 1 / bitrate; % Bit duration
+f = 0:bitrate/100:2*bitrate; % Frequency range for power spectrum
+x1 = f * TB; % Power spectrum frequency
+t = 0:dt:T; % Time vector
+x = zeros(1, length(t)); % Initialize signal array
+% Differential Manchester Encoding
+prev_signal = 1; % Initial signal level (arbitrary choice, can start with +1 or -1)
+for i = 0:length(bits)-1
+  mid_index = (i * n) + (0.5 * n);
+  % Always transition at the middle of the bit duration
+  x((i*n)+1:mid_index) = prev_signal; % First half
+  prev_signal = -prev_signal; % Transition for the second half
+  x(mid_index+1:(i+1)*n) = prev_signal; % Second half
+  % Change the signal level based on the bit value
+  if bits(i+1) == 0
+    prev_signal = -prev_signal; % Change level if the bit is 0
+  end
+end
+% Plotting the Differential Manchester signal
+figure(8)
+subplot(2,1,1)
+plot(x);
+xlabel('Discrete time');
+ylabel('Amplitude');
+title('DIFFERENTIAL MANCHESTER LINE CODING');
+axis([0 2500 -2 2]);
+% Power spectrum calculation
+sx1 = (1^2) * TB * (sinc(x1 / 2)).^2 .* (sin(pi * x1 / 2)).^2; % Power spectrum
+subplot(2,1,2)
+plot(sx1);
+xlabel('Frequency');
+ylabel('Power');
+title('DIFFERENTIAL MANCHESTER POWER SPECTRUM');
